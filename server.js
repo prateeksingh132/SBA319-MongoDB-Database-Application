@@ -18,15 +18,17 @@ import dotenv from "dotenv";
 
 
 //////// Import Database
+import connectDB from "./database/conn.js"; // DB connection
 
 
-// load env vars from .env file
-dotenv.config();
 
 ////////////////////////////////////////// Setups
-const PORT = 3000;
+// load env vars from .env file
+dotenv.config();
 const app = express();
-
+const PORT = process.env.PORT || 3001;
+// connect database
+connectDB();
 
 
 //////////////////////////////////////// Middleware
