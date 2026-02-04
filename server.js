@@ -40,9 +40,9 @@ const app = express();
 //////////////////////////////////////// Routes
 
 ////////////TESTING
-app.get("/", (req, res) => {
-  res.send("testing read!");
-});
+// app.get("/", (req, res) => {
+//   res.send("testing read!");
+// });
 ////////////TESTING
 
 

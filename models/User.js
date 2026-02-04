@@ -1,0 +1,1 @@
+// model: schema for user collection

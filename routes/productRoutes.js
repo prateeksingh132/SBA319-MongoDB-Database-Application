@@ -1,0 +1,1 @@
+/////// API logic: All routes logic for gadgetshack page

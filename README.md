@@ -1,6 +1,6 @@
 # SBA 319: MongoDB Database Application
 
-## Project: 
+## Project: GadgetShack Backend (Database Layer)
 
 **Brief Description:**
 
