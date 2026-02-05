@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import { logReq } from "./middleware/logger.js";
 
 ///////// Import Error Handling Middleware
-
+import { globalErr, error404 } from "./middleware/error.js";
 
 ///////// Import routes
 
@@ -51,6 +51,16 @@ app.use(logReq);
 
 
 //////////////////////////////////////// Error Handling
+////////////////////////////////////////
+// this has to be at the end, after all routes
+
+// 404 Handler - Custom middleware -- used from sba 318
+// this will run when no route above matches the url
+app.use(error404);
+
+// Global error handler: this will catch any errors passed from error404 or other routes
+app.use(globalErr);
+
 
 
 ////////////////////////////////////////// Listener
