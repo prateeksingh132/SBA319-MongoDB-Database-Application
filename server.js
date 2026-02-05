@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 
 ///////// Import Logging Middleware
-
+import { logReq } from "./middleware/logger.js";
 
 ///////// Import Error Handling Middleware
 
@@ -32,7 +32,8 @@ connectDB();
 
 
 //////////////////////////////////////// Middleware
-
+// logging middleware
+app.use(logReq);
 
 
 
