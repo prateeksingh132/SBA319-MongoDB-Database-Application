@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 
 // goal: create user schema
 // i need users so i can link reviews to them later.
+// FUTUREWORK: add references here and in readme later
 
 const userSchema = new mongoose.Schema({
 
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         // validation: simple regex for email format
         // i found this regex on stackoverflow to validate emails, works pretty good
+        // reference: https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             'Please add a valid email'

@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 
 // goal: create a schema for products
 // i put a lot of validation here to make sure i dont have any bad data in my project.
+// logic: i used map for the specs field because different gadgets have different specs (like cpu or battery life). this lets me store key-value pairs without changing the schema every time. i also added indexes on price and name to make future searches faster.
+// FUTUREWORK: add references here and in readme later
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -44,6 +46,7 @@ const productSchema = new mongoose.Schema({
     // logic: the problem is how do i store specs because a laptop has CPU but a headphone has Battery.
     // so i decided to use a map here instead of a fixed object. i referred some examples on google.
     // this allows me to add different keys for different products
+    // reference: https://mongoosejs.com/docs/schematypes.html#maps
     specs: {
         type: Map,
         of: String,
