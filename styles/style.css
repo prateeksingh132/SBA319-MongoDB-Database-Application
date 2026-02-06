@@ -1,1 +1,292 @@
 /* View styling logic */
+
+/* As this SBA is adding a backend layer (with mongodb) to my gadgetshack project which is gonna be my final capstone project */
+/* I have referred my SBA 308A/318 css styling. I am keeping the theme and look similar. */
+/* Which will also be the same for my capstone project later*/
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
+    /* background-color: aqua; */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+
+/* Remember: keep the theme similar to sba 307,316, 318: blue and orange */
+/* refer the sba 307, 318 styling code, keep the theme */
+
+/* -------------- Main Page Styling --------------*/
+/* Goal: center the content in the middle of the screen */
+body {
+    background-color: #f4f4f9;
+    /* light grey background */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    /* FUTUREWORK: explore different cool fonts style */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --------------  Navbar styling -------------- */
+/* Goal: similar to sba 307,318 refer the code */
+.navBar {
+    background-color: #003366;
+    /* dark blue */
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logoBox a {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.navLinksList {
+    list-style: none;
+    /* remove bullet points */
+    display: flex;
+    gap: 20px;
+}
+
+.navLinksList a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* hover effect for links */
+.navLinksList a:hover {
+    color: #ff6600;
+    /* orange */
+}
+
+
+/* --------------  Product box styling -------------- */
+/* Goal: similar to sba 307,,318 i am gonna add the styling for newly created item boxes and its elements */
+/* refer the sba 307 styling code, keep the theme */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    /* in sba 307 I tried using flex-grow: 1 to make the footer stick to the bottom. but commented it out since margin-top auto in footer does the same */
+    /* it makes this container take up all available space so footer stays down. */
+    flex-grow: 1;
+}
+
+.product-cards-div {
+    display: flex;
+    flex-wrap: wrap;
+    /* important: allows cards to wrap to next row */
+    gap: 25px;
+    /* space between items */
+    justify-content: center;
+    /* keeps items in the middle */
+}
+
+/* item box styling */
+.card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    /* important: this creates a rounded corner, else it looks ugly*/
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    height: 450px;
+    /* ANIMATION: i added a transition property here so hover looks smooth */
+    /* also added a easy box shadow transition animation */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* FUTUREWORK: see if you can add more cool animation later on if you have time */
+    border: 1px solid #ddd;
+
+    /* using flexbox to push buttons to the bottom */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Animation: hover on card effect */
+.card:hover {
+    transform: translateY(-5px);
+    /* moves up slightly */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+    color: #003366;
+    margin-top: 0;
+}
+
+.price {
+    color: #ff6600;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.category {
+    background-color: #f0f0f0;
+    /* slightly lighter grey */
+    display: inline-block;
+    /* padding: 4px 10px; */
+    border-radius: 15px;
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: bold;
+
+    /* adding space above and below so it doesnt touch the price/text */
+    margin: 10px 0;
+    align-self: flex-start;
+    /* this solved the category taking whole horizontal space in the card*/
+    margin: 0 0 10px 0;
+}
+
+.card-description {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+
+    /* similar to the logic from main-container, this makes the text fill the empty space in the card */
+    flex-grow: 1;
+    margin: 10px 0;
+
+    /* so if text is too long, it will mess up my layout. so found this styling overflow-y.this adds a scrollbar which is cool */
+    overflow-y: auto;
+}
+
+/* -------------- Buttons --------------  */
+button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.edit-link {
+    display: inline-block;
+    margin-left: 10px;
+    color: #003366;
+    text-decoration: underline;
+}
+
+.itemImage {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    /* keeps image ratio intact */
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+/* --------------  Forms --------------  */
+.form-container,
+.add-section {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    max-width: 500px;
+    /* border-top: 4px solid #ff6600; */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation: hover on form effect */
+.form-container:hover,
+.add-section:hover {
+    transform: translateY(-5px);
+    /* moves up slightly */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+/* -------------- Users and Reviews styling-------------- */
+.extra-data-container {
+    background: white;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation: hover on card effect */
+.extra-data-container:hover {
+    transform: translateY(-5px);
+    /* moves up slightly */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.extra-data-container h2 {
+    color: #003366;
+    border-bottom: 2px solid #ff6600;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.data-list li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+/* Review section styling */
+/* similar to product-cards-div but simpler */
+.reviews-cards-div {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.review-item-box {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+/* --------------  Footer styling --------------   */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    /* margin top auto also keeps the footer stays down */
+    margin-top: auto;
+}

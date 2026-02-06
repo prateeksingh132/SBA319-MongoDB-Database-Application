@@ -56,7 +56,8 @@ app.engine("html", function (filePath, options, cb) {
 });
 app.set("views", "./views");
 app.set("view engine", "html");
-
+app.use(express.static("./styles")); // serve static files from the styles directory
+app.use(express.static("./images"));
 
 //////////////////////////////////////// Routes
 //////////////////////////////////////// 
