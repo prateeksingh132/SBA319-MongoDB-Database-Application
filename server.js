@@ -11,18 +11,17 @@ import { logReq } from "./middleware/logger.js";
 ///////// Import Error Handling Middleware
 import { globalErr, error404 } from "./middleware/error.js";
 
-//////// Import Controller
-import { getAllProducts } from "./controller/productController.js";
-
 ///////// Import routes
-
+import productRoutes from "./routes/productRoutes.js";
 
 ///////// Import file handler
-
+import fs from "fs";
 
 //////// Import Database
 import connectDB from "./database/conn.js"; // DB connection
 
+// i need method-override to use PUT and DELETE in html forms, (similar to sba 318)
+import methodOverride from "method-override";
 
 
 ////////////////////////////////////////// Setups
@@ -35,6 +34,10 @@ connectDB();
 
 
 //////////////////////////////////////// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride('_method'));
+
 // logging middleware
 app.use(logReq);
 
@@ -44,11 +47,19 @@ app.use(logReq);
 
 
 //////////////////////////////////////// Routes
+//////////////////////////////////////// 
+// connecting the product routes. any url starting with /products goes here.
+app.use("/products", productRoutes);
+
+// home page route
+app.get("/", (req, res) => {
+    res.send("GadgetShack with DB Connected.....");
+});
+
 
 ////////////TESTING
-app.get('/test_controller', getAllProducts);
+//app.get('/test_controller', getAllProducts);
 ////////////TESTING
-
 
 ////////////TESTING
 // app.get("/", (req, res) => {
