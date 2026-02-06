@@ -82,3 +82,18 @@ export const getAllProducts = async (req, res, next) => {
         next(err);
     }
 };
+
+
+// create product
+
+export const createProduct = async (req, res, next) => {
+    try {
+        // logic: mongoose .create() validates data against schema automatically
+        await Product.create(req.body);
+        // redirecting back to shop after creation
+        res.redirect('/products');
+    } catch (err) {
+        // if validation fails, error middleware handles it
+        next(err);
+    }
+};
