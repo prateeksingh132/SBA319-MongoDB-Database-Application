@@ -210,8 +210,49 @@ export const getUserProfile = async (req, res, next) => {
 
         ////////////TESTING
         // TEMPORARY: sending json to test
-        res.json({ user, userReviews });
+        // res.json({ user, userReviews });
         ////////////TESTING
+
+
+        // creating html string for users profile to send to the view engine
+        let profileHtml = `
+            <div class="profile-container">
+                <h1 class="profile-header">${user.username}'s Profile</h1>
+                
+                <div class="profile-details">
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Role:</strong> <span style="text-transform: capitalize;">${user.role}</span></p>
+                    <p><strong>Member Since:</strong> ${new Date(user.createdAt).toLocaleDateString()}</p>
+                </div>
+                
+                <h2 style="margin-top: 30px; color: #003366;">Reviews Written (${userReviews.length})</h2>
+                <div class="reviews-list">
+        `;
+
+        if (userReviews.length === 0) {
+            profileHtml += `<p>This user hasn't written any reviews yet.</p>`;
+        } else {
+            for (let r of userReviews) {
+                profileHtml += `
+                    <div class="review-card">
+                        <h3 style="margin: 0; color: #333;">${r.product.name}</h3>
+                        <p class="review-rating">Rating: ${r.rating}/5</p>
+                        <p style="font-style: italic; color: #555;">"${r.text}"</p>
+                        <small style="color: #999;">Posted on: ${new Date(r.createdAt).toLocaleDateString()}</small>
+                    </div>
+                `;
+            }
+        }
+
+        // added the profile-back-btn class styling in css
+        profileHtml += `
+                </div>
+                <a href="/products" class="profile-back-btn">Back to Dashboard</a>
+            </div>
+        `;
+
+        res.render("index", { title: `${user.username}'s Profile`, content: profileHtml });
+
 
 
     } catch (err) {
