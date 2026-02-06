@@ -44,6 +44,18 @@ app.use(logReq);
 
 
 //////////////////////////////////////// View Engine 
+// reusing my logic from sba 318. this simple engine replaces #title# and #content# placeholders.
+app.engine("html", function (filePath, options, cb) {
+    fs.readFile(filePath, (err, content) => {
+        if (err) return cb(err);
+        let rendered = content.toString();
+        if (options.title) rendered = rendered.replace("#title#", options.title);
+        if (options.content) rendered = rendered.replace("#content#", options.content);
+        return cb(null, rendered);
+    });
+});
+app.set("views", "./views");
+app.set("view engine", "html");
 
 
 //////////////////////////////////////// Routes
@@ -53,7 +65,22 @@ app.use("/products", productRoutes);
 
 // home page route
 app.get("/", (req, res) => {
-    res.send("GadgetShack with DB Connected.....");
+    //res.send("GadgetShack with DB Connected.....");
+
+    // using the view engine now
+    let homeHtml = `
+        <div class="hero">
+            <h1>Welcome to GadgetShack</h1>
+            <p>Powered by MongoDB & Mongoose</p>
+            <div class="status-box">
+                <p>Database Connected</p>
+            </div>
+            <a href="/products" class="shop-btn">Enter Shop</a>
+        </div>
+    `;
+
+    res.render("index", { title: "Home", content: homeHtml });
+
 });
 
 
