@@ -29,7 +29,7 @@ export function globalErr(err, req, res, next) {
 }
 
 
-// i created this custom 404 error middleware, i will keep it here. it adds robustness to my project.
+// i created this custom 404 error middleware in sba 318, i will keep it here. it adds robustness to my project.
 // 
 // Custom Middleware: 404 Not Found
 // idea is that if the request gets to the bottom of the routes and matches nothing,

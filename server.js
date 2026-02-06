@@ -11,6 +11,9 @@ import { logReq } from "./middleware/logger.js";
 ///////// Import Error Handling Middleware
 import { globalErr, error404 } from "./middleware/error.js";
 
+//////// Import Controller
+import { getAllProducts } from "./controller/productController.js";
+
 ///////// Import routes
 
 
@@ -41,6 +44,11 @@ app.use(logReq);
 
 
 //////////////////////////////////////// Routes
+
+////////////TESTING
+app.get('/test_controller', getAllProducts);
+////////////TESTING
+
 
 ////////////TESTING
 // app.get("/", (req, res) => {
