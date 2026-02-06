@@ -69,13 +69,107 @@ export const getAllProducts = async (req, res, next) => {
         ////////////TESTING
         // TEMPORARY: sending json to test if logic works before building the view
         // i will replace this with res.render later
-        res.json({
-            dashboard: { totalVal, topCat },
-            productsCount: products.length,
-            reviewsCount: reviews.length,
-            usersCount: users.length
-        });
+        // res.json({
+        //     dashboard: { totalVal, topCat },
+        //     productsCount: products.length,
+        //     reviewsCount: reviews.length,
+        //     usersCount: users.length
+        // });
         ////////////TESTING
+
+
+        // Goal: creating html string to send to the view engine
+        let html = ``;
+
+        // building my dashboard
+        html += `
+            <div class="dashboard-banner">
+                <div class="stat-box">
+                    <h3>Inventory Value</h3>
+                    <h1>$${totalVal.toLocaleString()}</h1>
+                </div>
+                <div class="stat-box">
+                    <h3>Top Category</h3>
+                    <h1 class="stat-highlight" style="text-transform: uppercase;">${topCat}</h1>
+                </div>
+                <div class="stat-box">
+                    <h3>Total Products</h3>
+                    <h1>${products.length}</h1>
+                </div>
+            </div>
+            
+            <div class="product-cards-div">
+        `;
+
+        // product cards
+        for (let p of products) {
+
+            // logic to render the specs map into a list
+            let specsHtml = '<ul class="specs-list">';
+            if (p.specs) {
+                for (let [key, val] of p.specs) {
+                    specsHtml += `<li><span class="specs-key">${key}:</span> ${val}</li>`;
+                }
+            }
+            specsHtml += '</ul>';
+
+            html += `
+                <div class="card">
+                    <h3>${p.name}</h3>
+                    <div class="itemImage">
+                        <img src="${p.image}" alt="${p.name}" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    
+                    <p class="price">$${p.price}</p>
+                    <span class="category">${p.category}</span>
+                    
+                    ${specsHtml} 
+                    
+                    <p class="stock">Stock: ${p.stock}</p>
+                    <p class="card-description">${p.description}</p>
+                    
+                    <div class="action-buttons">
+                        <form action="/products/${p._id}?_method=DELETE" method="POST" style="margin:0;">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                        <a href="/products/${p._id}/edit" class="edit-link">Edit</a>
+                    </div>
+                </div>
+            `;
+        }
+        html += `</div>`;
+
+        // adding product form here
+        // similar to sba 318
+        html += `
+            <div class="form-container">
+                <h2>Add New Gadget</h2>
+                <form action="/products" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="number" name="price" placeholder="Price" required>
+                    
+                    <select name="category">
+                        <option value="laptops">Laptops</option>
+                        <option value="smartphones">Smartphones</option>
+                        <option value="audio">Audio</option>
+                        <option value="tablets">Tablets</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                    
+                    <input type="number" name="stock" placeholder="Stock Qty">
+                    <input type="text" name="image" placeholder="Image URL">
+                    <textarea name="description" placeholder="Description"></textarea>
+                    
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Specs (Format: JSON string like {"CPU":"M1"})</p>
+                    <input type="text" name="specs" placeholder='{"CPU": "M1", "RAM": "16GB"}'>
+
+                    <button type="submit" style="background-color: #003366; color: white; width: 100%; padding: 12px; font-size: 1rem;">Add to Database</button>
+                </form>
+            </div>
+        `;
+
+        res.render("index", { title: "Admin Dashboard", content: html });
+
 
 
     } catch (err) {
@@ -99,9 +193,9 @@ export const createProduct = async (req, res, next) => {
 };
 
 
-// user profile logic: i am gonna create a user profile controller that fetches a users specific reviews
+
 // Goal: display all reviews written by a specific user.
-// logic: finding all reviews where the user matches the url id.
+// user profile logic: i am gonna create a user profile controller that fetches a users specific reviews. i will find all reviews where the user matches the url id.
 // FUTUREWORK: test it after creating router
 export const getUserProfile = async (req, res, next) => {
     try {
