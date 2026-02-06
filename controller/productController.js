@@ -85,7 +85,7 @@ export const getAllProducts = async (req, res, next) => {
 
 
 // create product
-
+// FUTUREWORK: test it after creating router
 export const createProduct = async (req, res, next) => {
     try {
         // logic: mongoose .create() validates data against schema automatically
@@ -94,6 +94,84 @@ export const createProduct = async (req, res, next) => {
         res.redirect('/products');
     } catch (err) {
         // if validation fails, error middleware handles it
+        next(err);
+    }
+};
+
+
+// user profile logic: i am gonna create a user profile controller that fetches a users specific reviews
+// Goal: display all reviews written by a specific user.
+// logic: finding all reviews where the user matches the url id.
+// FUTUREWORK: test it after creating router
+export const getUserProfile = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        // finding user details
+        const user = await User.findById(userId);
+        if (!user) return res.send("User not found");
+
+        // finding reviews by this user and populating the product info
+        // i need populate('product') so i can show the name of the item they reviewed
+        const userReviews = await Review.find({ user: userId }).populate('product');
+
+        ////////////TESTING
+        // TEMPORARY: sending json to test
+        res.json({ user, userReviews });
+        ////////////TESTING
+
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+// delete product
+// FUTUREWORK: test it after creating router
+export const deleteProduct = async (req, res, next) => {
+    try {
+        // using mongoose method
+        await Product.findByIdAndDelete(req.params.id);
+
+        ////////////TESTING
+        // console.log(`TESTING: Deleted ${req.params.id}`);
+        ////////////
+
+        res.redirect('/products');
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+// show edit form
+// Goal: similar to sba 318, i am gonna create an edit button in each product card. when i clicks edit,the server has to find the item and it shows a form filled with the old data
+// and then i can update and when i clicks updtae button, the server has to find the item again, overwrite the old data with new data, and save it
+// FUTUREWORK: test it after creating router
+export const showEditForm = async (req, res, next) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.send("Not Found");
+
+        ////////////TESTING
+        // TEMPORARY
+        res.send(`Edit Form for ${product.name}`);
+        ////////////TESTING
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+// update product
+// FUTUREWORK: test it after creating router
+export const updateProduct = async (req, res, next) => {
+    try {
+        // logic: finding by id and updating.
+        // IMPORTANT: runValidators: true is important so that it checks enum and required fields again
+        await Product.findByIdAndUpdate(req.params.id, req.body, { runValidators: true });
+        res.redirect('/products');
+
+    } catch (err) {
         next(err);
     }
 };
