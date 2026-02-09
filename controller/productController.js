@@ -154,6 +154,28 @@ export const getAllProducts = async (req, res, next) => {
         html += `</ul></div>`;
 
 
+
+        // reviews section
+        html += `
+            <div class="extra-data-container">
+                <h2>Recent Reviews</h2>
+                <div class="reviews-grid">
+        `;
+        for (let r of reviews) {
+            // i am gonna do a validation check here just in case product was deleted but review remained
+            if (r.product && r.user) {
+                html += `
+                    <div class="review-card">
+                        <p class="rating">⭐ ${r.rating}/5</p>
+                        <p>"${r.text}"</p>
+                        <small>- by ${r.user.username} on ${r.product.name}</small>
+                    </div>
+                `;
+            }
+        }
+        html += `</div></div>`;
+
+
         // adding product form here
         // similar to sba 318
         html += `
