@@ -219,6 +219,21 @@ export const getAllProducts = async (req, res, next) => {
 // FUTUREWORK: test it after creating router
 export const createProduct = async (req, res, next) => {
     try {
+
+        // previous bug: i was getting cast error when i enter the spec detail (json data in my add new gadget form)
+        // logic: the form sends specs as a string but mongoose expects a map/object. if i dont parse it, it crashes with a casterror.
+        if (req.body.specs) {
+            try {
+                // so i have to manually convert the json string into an actual object
+                req.body.specs = JSON.parse(req.body.specs);
+            } catch (e) {
+                // if the json is bad/invalid, i will just save empty specs so it doesnt crash
+                console.log("Invalid JSON in specs, saving empty specs.");
+                req.body.specs = {};
+            }
+        }
+
+
         // logic: mongoose .create() validates data against schema automatically
         await Product.create(req.body);
         // redirecting back to shop after creation
