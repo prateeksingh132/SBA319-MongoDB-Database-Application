@@ -139,6 +139,21 @@ export const getAllProducts = async (req, res, next) => {
         }
         html += `</div>`;
 
+
+        // user list section (i updated it to link to profile)
+        html += `
+            <div class="extra-data-container">
+                <h2>Community Members</h2>
+                <ul class="data-list">
+        `;
+        for (let u of users) {
+            // linking to user profile page
+            // idea is that when i click the name, it should take me to their specific profile page
+            html += `<li><a href="/products/user/${u._id}" style="color: #003366; font-weight: bold;">${u.username}</a> (${u.role})</li>`;
+        }
+        html += `</ul></div>`;
+
+
         // adding product form here
         // similar to sba 318
         html += `
@@ -310,7 +325,7 @@ export const showEditForm = async (req, res, next) => {
                 <a href="/products">Cancel</a>
             </div>
         `;
-        
+
         res.render("index", { title: "Edit", content: formHtml });
 
     } catch (err) {
