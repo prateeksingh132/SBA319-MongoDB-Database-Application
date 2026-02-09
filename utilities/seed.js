@@ -2,7 +2,8 @@
 
 // goal: script to seed the database with initial data
 // Important: i ahve to make sure that each collections have sample data (at least 5 per collection). also, i have to create the users first so i can grab their ids to use in the reviews later
-// since dylan mentioned in class, i used the chatgpt to generate some sample data (5 each) based on schemas, which i have added here.
+// since dylan mentioned in class, i have generated some sample data (5 each) based on schemas, which i have added here.
+// Note: some of the image url doesnt work anymore, seems they get expired after a while, so for permanent fix, i just uploaded images in my images folder and use static file in view logic (server.js) to access them.
 
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';

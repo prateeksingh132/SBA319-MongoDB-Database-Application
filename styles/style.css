@@ -292,7 +292,78 @@ input {
 }
 
 
-/* New styling for dahsboard, spec list, user profile etc */
+/* New styling for Homepage (hero section), dahsboard, spec list, user profile etc */
+
+/*  -------------- Homepage --------------  */
+.hero-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+
+.hero {
+    background: white;
+    padding: 40px 60px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* animation transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 5px solid #ff6600;
+}
+
+.hero:hover {
+    /* moves up slightly */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #003366;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.status-box {
+    display: inline-block;
+    background-color: #e6fffa;
+    color: #006644;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    border: 1px solid #b3f0e0;
+}
+
+.shop-btn {
+    background-color: #003366;
+    color: white;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.shop-btn:hover {
+    background-color: #ff6600;
+    /* orange on hover */
+    color: white;
+}
+
 
 /* -------------- Dashboard  -------------- */
 .dashboard-banner {

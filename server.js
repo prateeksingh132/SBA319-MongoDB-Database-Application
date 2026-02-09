@@ -70,13 +70,17 @@ app.get("/", (req, res) => {
 
     // using the view engine now
     let homeHtml = `
-        <div class="hero">
-            <h1>Welcome to GadgetShack</h1>
-            <p>Powered by MongoDB & Mongoose</p>
-            <div class="status-box">
-                <p>Database Connected</p>
+        <div class="hero-container">
+            <div class="hero">
+                <h1>Welcome to GadgetShack</h1>
+                <p>Powered by MongoDB & Mongoose</p>
+                
+                <div class="status-box">
+                    <span>&#9679;</span> Database Connected Successfully...
+                </div>
+                <br>
+                <a href="/products" class="shop-btn">Enter Shop</a>
             </div>
-            <a href="/products" class="shop-btn">Enter Shop</a>
         </div>
     `;
 
