@@ -107,7 +107,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 300px;
-    height: 450px;
+    height: 650px;
     /* ANIMATION: i added a transition property here so hover looks smooth */
     /* also added a easy box shadow transition animation */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -306,6 +306,14 @@ input {
     text-align: center;
     border-bottom: 4px solid #ff6600;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation: hover on card effect */
+.dashboard-banner:hover {
+    transform: translateY(-5px);
+    /* moves up slightly */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .stat-box h3 {
@@ -336,6 +344,9 @@ input {
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #eee;
+    /* bug: the spec list seems to push the buttons out of the product cards. so i added a scrollbar for spec list as well. */
+    max-height: 100px;
+    overflow-y: auto;
 }
 
 .specs-list li {

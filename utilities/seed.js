@@ -49,7 +49,7 @@ const importData = async () => {
                 category: "laptops",
                 description: "High performance gaming laptop with RTX graphics.",
                 stock: 10,
-                image: "https://images.unsplash.com/photo-1603302576837-63f3ebee9b45?auto=format&fit=crop&q=80&w=600",
+                image: "/proLaptop.jpg",
                 specs: {
                     "CPU": "Intel i9",
                     "RAM": "32GB",
@@ -62,7 +62,7 @@ const importData = async () => {
                 category: "smartphones",
                 description: "Latest AI technology with 100x zoom.",
                 stock: 25,
-                image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=600",
+                image: "/smartphones.jpg",
                 specs: {
                     "Screen": "6.8 inch OLED",
                     "Battery": "5000mAh",
@@ -75,7 +75,7 @@ const importData = async () => {
                 category: "audio",
                 description: "Premium wireless headphones.",
                 stock: 50,
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600",
+                image: "/headset.jpg",
                 specs: {
                     "Type": "Over-ear",
                     "Battery Life": "30 Hours",
@@ -88,7 +88,7 @@ const importData = async () => {
                 category: "accessories",
                 description: "Clicky switches for the best typing experience.",
                 stock: 100,
-                image: "https://images.unsplash.com/photo-1587829741301-dc798b91a603?auto=format&fit=crop&q=80&w=600",
+                image: "/gamingLaptop.jpg",
                 specs: {
                     "Switch": "Cherry MX Blue",
                     "Backlight": "RGB"
@@ -100,7 +100,7 @@ const importData = async () => {
                 category: "accessories",
                 description: "Ultra HD display for crystal clear work and gaming.",
                 stock: 15,
-                image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=600",
+                image: "/tablet.jpg",
                 specs: {
                     "Resolution": "3840 x 2160",
                     "Refresh Rate": "144Hz"
