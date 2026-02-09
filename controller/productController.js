@@ -289,8 +289,29 @@ export const showEditForm = async (req, res, next) => {
 
         ////////////TESTING
         // TEMPORARY
-        res.send(`Edit Form for ${product.name}`);
+        //res.send(`Edit Form for ${product.name}`);
         ////////////TESTING
+
+
+        let formHtml = `
+            <div class="form-container">
+                <h2>Edit ${product.name}</h2>
+                <form action="/products/${product._id}?_method=PATCH" method="POST">
+                    <label>Name</label>
+                    <input type="text" name="name" value="${product.name}">
+                    <label>Price</label>
+                    <input type="number" name="price" value="${product.price}">
+                    <label>Stock</label>
+                    <input type="number" name="stock" value="${product.stock}">
+                    <label>Description</label>
+                    <textarea name="description">${product.description}</textarea>
+                    <button type="submit">Update</button>
+                </form>
+                <a href="/products">Cancel</a>
+            </div>
+        `;
+        
+        res.render("index", { title: "Edit", content: formHtml });
 
     } catch (err) {
         next(err);
