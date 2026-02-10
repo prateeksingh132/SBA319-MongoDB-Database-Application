@@ -117,6 +117,10 @@ If you want to test the raw API endpoints without the HTML view, here is the ref
 | **PATCH** | `/products/:id` | updates a product's details. | `{ "price": 999 }` |
 | **DELETE** | `/products/:id` | deletes a product from the database. | N/A |
 
+
+I tested my application with postman. since i used standard routing in `productRoutes.js`, these endpoints work directly in postman
+
+
 # Bonus Objectives
 
 * **Use Mongoose:** I used mongoose for the entrie application (schemas, models, queries) instead of the native mongodb.
