@@ -106,7 +106,7 @@ Here is a guide on how to use the different pages and features:
 
 # API References (Usage with Postman)
 
-If you want to test the raw API endpoints without the HTML view, here is the reference:
+I created the API to follow standard REST principles. If you want to test the raw API endpoints without the HTML view, here is the reference:
 
 | Method | Endpoint | Description | Body (JSON) |
 | :--- | :--- | :--- | :--- |
@@ -118,7 +118,7 @@ If you want to test the raw API endpoints without the HTML view, here is the ref
 | **DELETE** | `/products/:id` | deletes a product from the database. | N/A |
 
 
-I tested my application with postman. since i used standard routing in `productRoutes.js`, these endpoints work directly in postman
+I also tested my application with postman. since i used standard routing in `productRoutes.js`, these endpoints work directly in postman
 
 
 # Bonus Objectives
