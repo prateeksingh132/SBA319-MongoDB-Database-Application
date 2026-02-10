@@ -36,6 +36,9 @@ connectDB();
 //////////////////////////////////////// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// Middleware for method-override - similar logic from sba 318
+// https://stackoverflow.com/questions/72611507/form-delete-method-is-redirecting-to-the-get-method-instead-in-express-js
+// https://dev.to/moz5691/method-override-for-put-and-delete-in-html-3fp2
 app.use(methodOverride('_method'));
 
 // logging middleware
@@ -44,16 +47,26 @@ app.use(logReq);
 
 
 //////////////////////////////////////// View Engine 
-// reusing my logic from sba 318. this simple engine replaces #title# and #content# placeholders.
+// reusing my logic from sba 318. 
+// logic: creating a view engine to read .html files. this simple engine replaces #title# and #content# placeholders.
 app.engine("html", function (filePath, options, cb) {
     fs.readFile(filePath, (err, content) => {
         if (err) return cb(err);
+
+        // i am converting the content to string so i can replace text
         let rendered = content.toString();
+
+        // replacing #title# and #content# placeholders in my html
+        // checking if options have title or content passed from the route
         if (options.title) rendered = rendered.replace("#title#", options.title);
         if (options.content) rendered = rendered.replace("#content#", options.content);
+
+        // return the final html string
         return cb(null, rendered);
     });
 });
+
+// View Engine setup
 app.set("views", "./views");
 app.set("view engine", "html");
 app.use(express.static("./styles")); // serve static files from the styles directory
@@ -61,10 +74,13 @@ app.use(express.static("./images")); // serve static files from the images direc
 
 //////////////////////////////////////// Routes
 //////////////////////////////////////// 
-// connecting the product routes. any url starting with /products goes here.
+// logic: i am keeping the same theme consistent with previous sbas, a homepage and a link to a product page (shop page)
+// product page route of my view.
 app.use("/products", productRoutes);
 
-// home page route
+// homepage route of my view
+// creating the base route for my homepage here. it has link to the products page
+// i am creating my homepage html content here dynamically to inject into my view (index.html)
 app.get("/", (req, res) => {
     //res.send("GadgetShack with DB Connected.....");
 

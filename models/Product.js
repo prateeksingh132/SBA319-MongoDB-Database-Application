@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: 'IMAGE URL'
+        default: 'IMAGE URL/PATH'
     },
     // adding stock to track how many items are left.
     stock: {
@@ -44,9 +44,10 @@ const productSchema = new mongoose.Schema({
 
     // dynamic specs logic
     // logic: the problem is how do i store specs because a laptop has CPU but a headphone has Battery.
-    // so i decided to use a map here instead of a fixed object. i referred some examples on google.
-    // this allows me to add different keys for different products
-    // reference: https://mongoosejs.com/docs/schematypes.html#maps
+    // thats why i decided to use a map here instead of a fixed object bcuz maps allows dynamic keys, i can add different keys for different products
+    // https://stackoverflow.com/questions/36228599/how-to-use-mongoose-model-schema-with-dynamic-keys
+    // https://mongoosejs.com/docs/schematypes.html#maps
+    // REMEMBER: check out the monggose document link later as they have more examples for adding functionality using maps. 
     specs: {
         type: Map,
         of: String,
@@ -66,7 +67,8 @@ const productSchema = new mongoose.Schema({
 productSchema.index({ price: 1 });
 
 // index 2: text index on name and description for search functionality
-// i added text index here because i want to be able to search for products by name later.
+// logic: the idea is that text index here can help me search for products by name later.
+// FUTUREWORK: i wanna add a search bar later
 productSchema.index({ name: 'text', description: 'text' });
 
 

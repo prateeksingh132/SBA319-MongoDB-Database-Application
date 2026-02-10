@@ -3,7 +3,6 @@
 // Goal: create error handling middleware.
 // similar to the sba 318 and warmup exercise we did in class.
 
-// Global error handling middleware: it takes 4 arguements
 export function globalErr(err, req, res, next) {
 
     // logic: if the error has a status code, use it, otherwise 500 (server error)

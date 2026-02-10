@@ -1,18 +1,22 @@
-//////// product controller
 
 //////// GadgetShack product controller
 
 // goal: this file handles the logic for product routes.
 // i separated this from the routes file to keep my code organized (modularization).
 
+// Requirement: Use at least three different data collections within the database
+// i have three different data cllections: Product, User and Reviews. i am gonna use and display all three of them on my view
+
 import Product from '../models/Product.js';
 import User from '../models/User.js';
 import Review from '../models/Review.js';
 
 
-// get all products (with filtering and dashboard stats)
-// Note: i am gonna temporarily use res.json so i can verify the data works in the browser without the view engine. i will change it to res.render later 
-// logic: i have used aggregation pipeline, used $group and $multiply to calculate the total inventory value directly in the database. similar to sba 318, i also added logic to fetch products, users, and reviews so i have everything needed for the dashboard. sending json for now to test
+// Goal: get all products (with filtering and dashboard stats)
+// Note: the idea is that i wanted to verify the data works in the browser without the view engine, thats why i temporarily used res.json. i changed it to res.render later 
+// similar to sba 318, i also added logic to fetch products, users, and reviews for the dashboard. sending json for now to test
+// logic: i have used aggregation pipeline, used $group and $multiply to calculate the total inventory value directly in the database. i found a example on stackoverflow that uses $sum and $multiply in a $group stage
+// https://stackoverflow.com/questions/24863388/mongodb-sum-the-product-of-two-fields
 
 export const getAllProducts = async (req, res, next) => {
 
@@ -25,7 +29,8 @@ export const getAllProducts = async (req, res, next) => {
         if (categoryQuery) {
             query = query.where('category').equals(categoryQuery);
         }
-        // sorting so newest items show first
+        // goal: i have to have the newest item show first
+        // thats why i am doing sorting here..
         query = query.sort('-createdAt');
         const products = await query;
 
@@ -39,11 +44,12 @@ export const getAllProducts = async (req, res, next) => {
         // i need users and reviews to display on the page
         const users = await User.find();
         // populate() is crucial here. 
-        // logic: the idea is thtat this will replaces the stored user id with the actual user object so i can get the username.
+        // logic: the idea is thtat this will replaces the stored user id with the actual user object so that i can get the username.
         const reviews = await Review.find().populate('user').populate('product');
 
-        // calculating total inventory value
-        // logic: i am gonna use mongoose aggregation pipeline to calculate stats on the server side.
+        // Goal: aggregation stats
+        // logic: i wanted to calculate the total value of all inventory (price * stock)
+        // i found a example on stackoverflow that uses $sum and $multiply in a $group stage: https://stackoverflow.com/questions/24863388/mongodb-sum-the-product-of-two-fields
         const valueStats = await Product.aggregate([
             {
                 $group: {
@@ -104,9 +110,11 @@ export const getAllProducts = async (req, res, next) => {
         // product cards
         for (let p of products) {
 
-            // logic to render the specs map into a list
+            // Goal: render the specs map into a list
+            // logic: the idea is that p.specs is a map. i need to loop through it to display the technical details.
             let specsHtml = '<ul class="specs-list">';
             if (p.specs) {
+                // looping through map keys and values
                 for (let [key, val] of p.specs) {
                     specsHtml += `<li><span class="specs-key">${key}:</span> ${val}</li>`;
                 }
@@ -205,6 +213,7 @@ export const getAllProducts = async (req, res, next) => {
             </div>
         `;
 
+        // i am passing to my view engine a title and this html string to put inside #content#
         res.render("index", { title: "Admin Dashboard", content: html });
 
 
@@ -221,13 +230,14 @@ export const createProduct = async (req, res, next) => {
     try {
 
         // previous bug: i was getting cast error when i enter the spec detail (json data in my add new gadget form)
-        // logic: the form sends specs as a string but mongoose expects a map/object. if i dont parse it, it crashes with a casterror.
+        // logic: the issue is that the html forms send all data as strings, even if i type json format, but mongoose expects a map/object. if i dont parse it, it crashes with a casterror. thats why i have to manually parse the specs string into an object for mongoose to save it as a map.
+        // i got the logic from this link, refer it if logic fails or bug persists later on: https://stackoverflow.com/questions/22195065/how-to-send-a-json-object-using-html-form-data
         if (req.body.specs) {
             try {
-                // so i have to manually convert the json string into an actual object
+                // i have to manually convert the json string into an actual object
                 req.body.specs = JSON.parse(req.body.specs);
             } catch (e) {
-                // if the json is bad/invalid, i will just save empty specs so it doesnt crash
+                // if the json is bad/invalid, i will just save empty specs, expty object
                 console.log("Invalid JSON in specs, saving empty specs.");
                 req.body.specs = {};
             }
@@ -236,6 +246,7 @@ export const createProduct = async (req, res, next) => {
 
         // logic: mongoose .create() validates data against schema automatically
         await Product.create(req.body);
+
         // redirecting back to shop after creation
         res.redirect('/products');
     } catch (err) {
@@ -256,8 +267,10 @@ export const getUserProfile = async (req, res, next) => {
         const user = await User.findById(userId);
         if (!user) return res.send("User not found");
 
-        // finding reviews by this user and populating the product info
-        // i need populate('product') so i can show the name of the item they reviewed
+        // Goal: finding reviews by this user and populating the product info
+        // the issue with showing review earlier was that when i displayed something like 'Review for iPhone', i would get 'Review for 64f8a...'. thats why i needed a way to get the product details instead of id
+        // logic: i need to find all reviews written by this user. i am using .populate('product') to replace the product_id with the actual product details (like name)
+        // reference: https://www.geeksforgeeks.org/mongodb/mongoose-populate-method/
         const userReviews = await Review.find({ user: userId }).populate('product');
 
         ////////////TESTING
@@ -323,6 +336,7 @@ export const deleteProduct = async (req, res, next) => {
         // console.log(`TESTING: Deleted ${req.params.id}`);
         ////////////
 
+        // after deleting, go back to the shop page
         res.redirect('/products');
 
     } catch (err) {
@@ -345,6 +359,10 @@ export const showEditForm = async (req, res, next) => {
         ////////////TESTING
 
 
+        // i am referring the same logic that i implemented in sba 318
+        // Important: HTML forms dont support patch, thats why i m gonna use the ?_method=PATCH using method-override middleware
+        // so when we click submit, it sends the data to /products/productId and kind of simulates a patch request.
+        // Note: i tested and noticed that the form initially is empty, so i dont know what to change in it. thats why, i needed to populate the input with exisiting data, else its confusing
         let formHtml = `
             <div class="form-container">
                 <h2>Edit ${product.name}</h2>
@@ -375,7 +393,8 @@ export const showEditForm = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
     try {
         // logic: finding by id and updating.
-        // IMPORTANT: runValidators: true is important so that it checks enum and required fields again
+        // IMPORTANT: i found out that by defeult findByIdAndUpdate doesnt run validators (like checking for required fields or enums) which i wanted in my logic. tghats why i have to explicitly set { runValidators: true } to enforce my schema rules during update.
+        // rememeber, in this example, they had the same issue but with findOneAndUpdate. logic is the same:  https://stackoverflow.com/questions/31101984/mongoose-findoneandupdate-and-runvalidators-not-working
         await Product.findByIdAndUpdate(req.params.id, req.body, { runValidators: true });
         res.redirect('/products');
 
